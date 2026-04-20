@@ -35,6 +35,29 @@ def get_schema() -> str:
     """
     return impala_tools.get_schema()
 
+@mcp.tool()
+def get_upstream_lineage(entity_id: str) -> dict:    
+    """                                                                                                                                                                    
+    Retrieve the 
+    """
+    return impala_tools.get_upstream_lineage(entity_id)
+
+
+@mcp.tool()
+def get_downstream_lineage(entity_id: str) -> dict:    
+"""
+    Extracts the structural ontology of the data environment. 
+    Use this when a user asks about the types of systems, platforms, data assets, 
+    or relationships that exist in the ecosystem.
+    """
+    return impala_tools.get_downstream_lineage()
+
+@mcp.tool()
+def get_ontology_schema() -> dict:    """                                                                                                                                                                    
+    Retrieves the dict of downstream data assets and ETL jobs that rely on the given entity_id.
+    Use this for impact analysis.
+    """
+    return impala_tools.get_downstream_lineage(entity_id)
 
 def main():
     transport = os.getenv("MCP_TRANSPORT", "stdio")
