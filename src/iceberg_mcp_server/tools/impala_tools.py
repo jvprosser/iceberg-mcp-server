@@ -89,7 +89,7 @@ def get_ontology_schema() -> dict:
     Use this when a user asks about the types of systems, platforms, data assets, 
     or relationships that exist in the ecosystem.
     """
-   try:
+    try:
         conn = get_db_connection()
     
         cursor = conn.cursor()
@@ -212,9 +212,7 @@ def get_downstream_lineage(entity_id: str) -> dict:
     Finds all downstream data assets and ETL jobs that rely on the given entity_id.
     Use this for impact analysis.
     """
-
     conn = None
-
     try:
         conn = get_db_connection()
     
