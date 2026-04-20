@@ -23,7 +23,7 @@ mcp = FastMCP(name="Cloudera Lineage MCP Server via Impala")
 # 2. RESOURCES: Static Knowledge
 # ==========================================
 @mcp.resource("lineage://schema/views")
-def get_view_definitions(context: Context) -> str:
+def get_view_definitions() -> str:
     """
     Provides the exact SQL DDL definitions of the Impala views.
     The agent can read this resource to understand the exact column names.
