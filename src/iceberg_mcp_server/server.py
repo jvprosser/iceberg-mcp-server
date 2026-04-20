@@ -16,8 +16,59 @@ load_dotenv()
 
 from iceberg_mcp_server.tools import impala_tools
 
-mcp = FastMCP(name="Cloudera Iceberg MCP Server via Impala")
+mcp = FastMCP(name="Cloudera Lineage MCP Server via Impala")
 
+# ==========================================
+# 2. RESOURCES: Static Knowledge
+# ==========================================
+@mcp.resource("lineage://schema/views")
+def get_view_definitions(context: Context) -> str:
+    """
+    Provides the exact SQL DDL definitions of the Impala views.
+    The agent can read this resource to understand the exact column names.
+    """
+    return """
+    VIEW lineage_entities: 
+      - entity_id (string, URN format)
+      - entity_name (string)
+      - entity_type (string, e.g., TABLE, VIEW, JOB)
+      - system_name (string, e.g., SNOWFLAKE)
+      - category (string, e.g., DATABASE, ETL_PROCESS)
+      
+    VIEW lineage_relationships: 
+      - source_id (string, URN format)
+      - target_id (string, URN format)
+      - relationship_type (string)
+      - relationship_category (string)
+    """
+
+
+# ==========================================
+# 3. PROMPTS: Pre-built Agentic Workflows
+# ==========================================
+@mcp.prompt("analyze_impact")
+def prompt_impact_analysis(entity_id: str) -> str:
+    """A template to instruct the agent on how to perform Impact Analysis."""
+    return f"""
+    You are the Enterprise Ontology Agent. The data engineering team wants to modify or drop the following entity: '{entity_id}'.
+    
+    Your instructions:
+    1. Use the `get_downstream_lineage` tool on '{entity_id}'.
+    2. Identify all critical ETL jobs, staging tables, and BI layers that will break.
+    3. Summarize the blast radius clearly for a non-technical business stakeholder.
+    """
+
+@mcp.prompt("trace_root_cause")
+def prompt_root_cause(entity_id: str) -> str:
+    """A template to instruct the agent on how to perform Root Cause Analysis."""
+    return f"""
+    You are investigating missing or anomalous data appearing in the following entity: '{entity_id}'.
+    
+    Your instructions:
+    1. Use the `get_upstream_lineage` tool to trace the graph backward.
+    2. Identify the original source database tables and the intermediate dbt/ETL jobs involved.
+    3. Formulate a hypothesis on where the data pipeline might have failed.
+    """
 
 # Register functions as MCP tools
 @mcp.tool()
