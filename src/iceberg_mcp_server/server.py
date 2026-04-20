@@ -86,7 +86,10 @@ def get_schema() -> str:
     """
     return impala_tools.get_schema()
 
-@mcp.tool()
+@mcp.tool(
+    name="get_upstream_lineage",
+    description="Finds all upstream data assets and ETL jobs that feed into the given entity_id. Use this for Root Cause Analysis."
+)
 def get_upstream_lineage(entity_id: str) -> dict:    
     """                                                                                                                                                                    
     Retrieve the 
@@ -94,7 +97,10 @@ def get_upstream_lineage(entity_id: str) -> dict:
     return impala_tools.get_upstream_lineage(entity_id)
 
 
-@mcp.tool()
+@mcp.tool(
+    name="get_downstream_lineage",
+    description="Finds all downstream data assets and ETL jobs that rely on the given entity_id. Use this for Impact Analysis."
+)
 def get_downstream_lineage(entity_id: str) -> dict:    
 """
     Extracts the structural ontology of the data environment. 
@@ -103,12 +109,16 @@ def get_downstream_lineage(entity_id: str) -> dict:
     """
     return impala_tools.get_downstream_lineage()
 
-@mcp.tool()
-def get_ontology_schema() -> dict:    """                                                                                                                                                                    
+@mcp.tool(
+    name="get_ontology_schema",
+    description="Extracts the high-level structural ontology (types of systems, assets, and connections) of the data environment."
+)
+def get_ontology_schema() -> dict:
+   """                                                                                                                                                                    
     Retrieves the dict of downstream data assets and ETL jobs that rely on the given entity_id.
     Use this for impact analysis.
     """
-    return impala_tools.get_downstream_lineage(entity_id)
+    return impala_tools.get_ontology_schema()
 
 def main():
     transport = os.getenv("MCP_TRANSPORT", "stdio")
