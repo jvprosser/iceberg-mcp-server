@@ -9,7 +9,8 @@
 ## permissions and limitations governing your use of the file.
 
 import os
-from fastmcp import FastMCP
+##from fastmcp import FastMCP
+from minimcp import MiniMCP, Context
 from dotenv import load_dotenv
 
 load_dotenv()
