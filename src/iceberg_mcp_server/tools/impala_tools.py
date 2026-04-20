@@ -59,14 +59,14 @@ def execute_query(query: str) -> str:
         else:
             conn.commit()
             result = "Query executed successfully."
-        cur.close()
+            cur.close()
         return result
     except Exception as e:
         return f"Error: {str(e)}"
     finally:
         if conn:
             conn.close()
-
+            
 
 def get_schema() -> str:
     conn = None
@@ -82,7 +82,7 @@ def get_schema() -> str:
     finally:
         if conn:
             conn.close()
-
+            
 def get_ontology_schema() -> dict:
     """
     Extracts the structural ontology of the data environment. 
@@ -141,7 +141,7 @@ def get_ontology_schema() -> dict:
     finally:
         if conn:
             conn.close()        
-
+            
 def get_upstream_lineage(entity_id: str) -> dict:
     """
     Finds all upstream data assets and ETL jobs that feed into the given entity_id.
@@ -206,7 +206,7 @@ def get_upstream_lineage(entity_id: str) -> dict:
         if conn:
             conn.close()
     
-
+            
 def get_downstream_lineage(entity_id: str) -> dict:
     """
     Finds all downstream data assets and ETL jobs that rely on the given entity_id.
@@ -264,5 +264,3 @@ def get_downstream_lineage(entity_id: str) -> dict:
     finally:
         if conn:
             conn.close()
-
-
