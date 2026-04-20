@@ -102,7 +102,7 @@ def get_upstream_lineage(entity_id: str) -> dict:
     description="Finds all downstream data assets and ETL jobs that rely on the given entity_id. Use this for Impact Analysis."
 )
 def get_downstream_lineage(entity_id: str) -> dict:    
-"""
+    """
     Extracts the structural ontology of the data environment. 
     Use this when a user asks about the types of systems, platforms, data assets, 
     or relationships that exist in the ecosystem.
