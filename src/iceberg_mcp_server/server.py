@@ -24,10 +24,7 @@ mcp = FastMCP(name="Cloudera Lineage MCP Server via Impala")
 # ==========================================
 @mcp.resource("lineage://schema/views")
 def get_view_definitions() -> str:
-    """
-    Provides the exact SQL DDL definitions of the Impala views.
-    The agent can read this resource to understand the exact column names.
-    """
+    """Provides the exact SQL DDL definitions of the Impala views."""
     return """
     VIEW lineage_entities: 
       - entity_id (string, URN format)
@@ -43,12 +40,13 @@ def get_view_definitions() -> str:
       - relationship_category (string)
     """
 
-
 # ==========================================
 # 3. PROMPTS: Pre-built Agentic Workflows
 # ==========================================
-@mcp.prompt("analyze_impact")
-def prompt_impact_analysis(entity_id: str) -> str:
+# FastMCP infers the prompt name from the function name. 
+# We rename the function to `analyze_impact` to keep the UI clean.
+@mcp.prompt()
+def analyze_impact(entity_id: str) -> str:
     """A template to instruct the agent on how to perform Impact Analysis."""
     return f"""
     You are the Enterprise Ontology Agent. The data engineering team wants to modify or drop the following entity: '{entity_id}'.
@@ -59,8 +57,9 @@ def prompt_impact_analysis(entity_id: str) -> str:
     3. Summarize the blast radius clearly for a non-technical business stakeholder.
     """
 
-@mcp.prompt("trace_root_cause")
-def prompt_root_cause(entity_id: str) -> str:
+# Renamed to `trace_root_cause` so FastMCP exposes it cleanly to the UI
+@mcp.prompt()
+def trace_root_cause(entity_id: str) -> str:
     """A template to instruct the agent on how to perform Root Cause Analysis."""
     return f"""
     You are investigating missing or anomalous data appearing in the following entity: '{entity_id}'.
@@ -70,7 +69,7 @@ def prompt_root_cause(entity_id: str) -> str:
     2. Identify the original source database tables and the intermediate dbt/ETL jobs involved.
     3. Formulate a hypothesis on where the data pipeline might have failed.
     """
-
+    
 # Register functions as MCP tools
 @mcp.tool()
 def execute_query(query: str) -> str:
