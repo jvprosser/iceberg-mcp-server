@@ -109,7 +109,7 @@ def get_downstream_lineage(entity_id: str) -> dict:
                    For databases, format MUST be: 'db:<system_name>:<database>:<schema>:<object_name>'. 
                    For ETLs, format MUST be: 'etl:<system_name>:<etl_type>:<job_name>'.
     """
-   return impala_tools.get_downstream_lineage(entity_id)
+    return impala_tools.get_downstream_lineage(entity_id)
 
 @mcp.tool()
 def get_upstream_lineage(entity_id: str) -> dict:
