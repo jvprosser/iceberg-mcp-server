@@ -44,7 +44,7 @@ def execute_query(query: str) -> str:
     # Implement rudimentary SQL injection prevention
     # In this case, we only allow read-only queries
     # This is a very basic check and should be improved for production use
-    readonly_prefixes = ["select", "show", "describe", "with"]
+    readonly_prefixes = ["select", "show", "describe", "with", "insert","update"]
 
     if not query.strip().lower().split()[0] in readonly_prefixes:
         return "Only read-only queries are allowed."
